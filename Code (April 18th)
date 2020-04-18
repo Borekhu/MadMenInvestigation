@@ -1,0 +1,23 @@
+### import libraries
+
+import pandas as pd
+import urllib
+from html.parser import HTMLParser
+from bs4 import BeautifulSoup
+import requests
+import xlsxwriter
+
+#### loading the MadMen page to make a list of use
+#STEP2: Create BeautifulSoup
+page = requests.get("https://en.wikipedia.org/wiki/Mad_Men")
+soup = BeautifulSoup(page.content, 'html.parser')
+mad_men_box = soup.find(class_="plainlist")
+cast_lines = mad_men_box.find_all("a")
+
+### TESTING ON A SINGLE LINE
+jon_ = cast_lines[0]
+>> print(jon_.prettify())
+
+
+
+
