@@ -6,9 +6,11 @@ from html.parser import HTMLParser
 from bs4 import BeautifulSoup
 import requests
 import xlsxwriter
+import wikipedia as wk
 
 #### loading the MadMen page to make a list of use
 #STEP2: Create BeautifulSoup
+
 page = requests.get("https://en.wikipedia.org/wiki/Mad_Men")
 soup = BeautifulSoup(page.content, 'html.parser')
 mad_men_box = soup.find(class_="plainlist")
@@ -18,6 +20,34 @@ cast_lines = mad_men_box.find_all("a")
 jon_ = cast_lines[0]
 >> print(jon_.prettify())
 
+### TURN LIST INTO SOMETHING WIKIPEDIA CAN PROCESS
+newlist = []
+for i in range(18):
+    newlist.append(cast_lines[i].get_text())
+print (newlist)
+
+#make a new list where are the names have no space
+s_newlist = []
+for name in newlist:
+    s_newlist = []
+    s_newlist.append(name.replace(" ",""))    
+    print(s_newlist)
+
+### DEFINE A FUNCTION THAT FINDS OUT IF THEY WENT TO PRIVATE SCHOOL
+def private_or(name):
+    try: 
+        wiki = wk.page(name)
+        link = wiki.url
+        contents = wiki.content
+        private = contents.find("private school") #Mistake I made was using html when I really wanted the string contents
+        if private == []:
+            print("no private")
+        else: 
+            print("yes private")
+    except wk.exceptions.PageError:
+        print ("N/A")
+        
+## 
 
 
 
